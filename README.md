@@ -2,6 +2,8 @@
 
 Reliable SMS delivery that scales with your business.
 
+> **🚨 IMPORTANT:** Check `working.md` before starting any work - it contains current status, blockers, and next steps.
+
 ## Quick Start
 
 1. **Install dependencies:**
