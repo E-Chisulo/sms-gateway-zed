@@ -1,0 +1,13 @@
+name = "femhold"
+main = "src/index.js"
+compatibility_date = "2025-09-07"
+
+[vars]
+MTN_BASE_URL = "https://api.mtn.com"
+MTN_CONSUMER_KEY = "haTVAsRGVPAT6kUGUhm0AlDjuazQbWMD"
+MTN_CONSUMER_SECRET = "3P3GKCDDgem3STvA"
+
+[[kv_namespaces]]
+binding = "API_KEYS"
+preview_id = "your-preview-kv-id"
+id = "your-production-kv-id"
