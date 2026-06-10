@@ -2,10 +2,16 @@ name = "femhold"
 main = "src/index.js"
 compatibility_date = "2025-09-07"
 
+# Non-sensitive config only — safe to commit
 [vars]
 MTN_BASE_URL = "https://api.mtn.com"
-MTN_CONSUMER_KEY = "haTVAsRGVPAT6kUGUhm0AlDjuazQbWMD"
-MTN_CONSUMER_SECRET = "3P3GKCDDgem3STvA"
+MTN_SERVICE_CODE = "your-short-code"  # e.g. "11221" — get from MTN onboarding
+MTN_SENDER_ID = "Femhold"
+
+# Secrets are NOT defined here — they are set via:
+#   wrangler secret put MTN_CONSUMER_KEY
+#   wrangler secret put MTN_CONSUMER_SECRET
+# Secrets are stored encrypted in Cloudflare and injected into env at runtime.
 
 [[kv_namespaces]]
 binding = "API_KEYS"
