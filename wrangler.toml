@@ -8,12 +8,16 @@ MTN_BASE_URL = "https://api.mtn.com"
 MTN_SERVICE_CODE = "your-short-code"  # e.g. "11221" — get from MTN onboarding
 MTN_SENDER_ID = "Femhold"
 
-# Secrets are NOT defined here — they are set via:
-#   wrangler secret put MTN_CONSUMER_KEY
-#   wrangler secret put MTN_CONSUMER_SECRET
-# Secrets are stored encrypted in Cloudflare and injected into env at runtime.
+# Secrets (set via `wrangler secret put`):
+#   npx wrangler secret put MTN_CONSUMER_KEY
+#   npx wrangler secret put MTN_CONSUMER_SECRET
 
 [[kv_namespaces]]
 binding = "API_KEYS"
-preview_id = "your-preview-kv-id"
-id = "your-production-kv-id"
+id = "6547025b7b4040ab9f47c570bb385535"
+preview_id = "5a8c717840504798bb9cd7e2ba54a327"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "sms-logs"
+database_id = "5c82be32-33ec-4975-ba49-379b4ceb723f"

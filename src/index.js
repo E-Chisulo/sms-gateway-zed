@@ -1,6 +1,7 @@
 import { handleSendSMS } from './sms.js';
 import { validateApiKey } from './auth.js';
 import { checkRateLimit } from './rateLimit.js';
+import { logSMS } from './logger.js';
 
 export default {
   async fetch(request, env) {
@@ -17,6 +18,9 @@ export default {
     }
 
     if (url.pathname === '/send-sms' && request.method === 'POST') {
+      let apiKey = null;
+      let body = null;
+
       try {
         // 1. Validate API key
         const authHeader = request.headers.get('Authorization');
@@ -27,7 +31,7 @@ export default {
           });
         }
 
-        const apiKey = authHeader.substring(7);
+        apiKey = authHeader.substring(7);
         const isValid = await validateApiKey(apiKey, env.API_KEYS);
 
         if (!isValid) {
@@ -54,14 +58,35 @@ export default {
         }
 
         // 3. Send SMS
-        const body = await request.json();
+        body = await request.json();
         const result = await handleSendSMS(body, env);
+
+        // 4. Log success
+        await logSMS(env.DB, {
+          apiKey,
+          recipient: body.to,
+          message: body.message,
+          status: 'success',
+          deliveryStatus: result.delivery_status,
+          messageId: result.message_id,
+        });
 
         return new Response(JSON.stringify(result), {
           headers: { ...corsHeaders, ...rateLimitHeaders, 'Content-Type': 'application/json' },
         });
 
       } catch (error) {
+        // Log failure if we got far enough to have a key and body
+        if (apiKey && body) {
+          await logSMS(env.DB, {
+            apiKey,
+            recipient: body.to,
+            message: body.message,
+            status: 'error',
+            error: error.message,
+          });
+        }
+
         return new Response(JSON.stringify({ error: error.message }), {
           status: 500,
           headers: { ...corsHeaders, 'Content-Type': 'application/json' },
